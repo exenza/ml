@@ -24,7 +24,7 @@
 	<video autoplay="true" id="videoElement">
 
 	</video>
-  <canvas></canvas>
+  <canvas id="canvas"></canvas>
 </div>
 <script>
 var video = document.querySelector("#videoElement");
@@ -39,30 +39,13 @@ if (navigator.mediaDevices.getUserMedia) {
     });
 }
 
+// Elements for taking the snapshot
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
+
 function snap(){
-  // Copying the image in a temporary canvas
-        var temp = document.createElement('canvas');
-
-        temp.width  = video.offsetWidth;
-        temp.height = video.offsetHeight;
-
-        var tempcontext = temp.getContext("2d"),
-            tempScale = (temp.height/temp.width);
-
-        temp.drawImage(
-            video,
-            0, 0,
-            video.offsetWidth, video.offsetHeight
-        );
-
-        // Resize it to the size of our canvas
-        canvas.style.height    = parseInt( canvas.offsetWidth * tempScale );
-        canvas.width        = canvas.offsetWidth;
-        canvas.height        = canvas.offsetHeight;
-        var context        = canvas.getContext("2d"),
-            scale        = canvas.width/temp.width;
-        context.scale(scale, scale);
-        context.drawImage(bigimage, 0, 0);
+context.drawImage(video, 0, 0, 640, 480);
 }
 </script>
 </body>
