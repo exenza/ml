@@ -25,6 +25,7 @@
 
 	</video>
 </div>
+<canvas id="canvas" width="640" height="480"></canvas>
 <script>
 var video = document.querySelector("#videoElement");
 
@@ -37,6 +38,17 @@ if (navigator.mediaDevices.getUserMedia) {
       console.log("Something went wrong!");
     });
 }
+
+// Elements for taking the snapshot
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
+
+// Trigger photo take
+snap() {
+	context.drawImage(video, 0, 0, 640, 480);
+});
+
 </script>
 </body>
 </html>
