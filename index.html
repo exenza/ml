@@ -1,79 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
-  <body onload="init();">
-    <h1>Take a snapshot of the current video stream</h1>
-   Click on the Start WebCam button.
-     <p>
-    <button onclick="startWebcam();">Start WebCam</button>
-    <button onclick="stopWebcam();">Stop WebCam</button>
-       <button onclick="snapshot();">Take Snapshot</button>
-    </p>
-    <video onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
-  <p>
 
-        Screenshots : <p>
-      <canvas  id="myCanvas" width="400" height="350"></canvas>
-  </body>
-  <script>
-      //--------------------
-      // GET USER MEDIA CODE
-      //--------------------
-          navigator.getUserMedia = ( navigator.getUserMedia ||
-                             navigator.webkitGetUserMedia ||
-                             navigator.mozGetUserMedia ||
-                             navigator.msGetUserMedia);
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
 
-      var video;
-      var webcamStream;
+<body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script type="text/javascript">
+    var video = document.getElementById('video');
 
-      function startWebcam() {
-        if (navigator.getUserMedia) {
-           navigator.getUserMedia (
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
 
-              // constraints
-              {
-                 video: true,
-                 audio: false
-              },
+    var errBack = function(e) {
+    	console.log('An error has occurred!', e)
+    };
 
-              // successCallback
-              function(localMediaStream) {
-                  video = document.querySelector('video');
-                 video.src = window.URL.createObjectURL(localMediaStream);
-                 webcamStream = localMediaStream;
-              },
+    // Get access to the camera!
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({
+            video: true
+        }).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    }
 
-              // errorCallback
-              function(err) {
-                 console.log("The following error occured: " + err);
-              }
-           );
-        } else {
-           console.log("getUserMedia not supported");
-        }
-      }
+    var mediaConfig =  { video: true };
 
-      function stopWebcam() {
-          webcamStream.stop();
-      }
-      //---------------------
-      // TAKE A SNAPSHOT CODE
-      //---------------------
-      var canvas, ctx;
+    //
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia(mediaConfig).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    }
 
-      function init() {
-        // Get the canvas and obtain a context for
-        // drawing in it
-        canvas = document.getElementById("myCanvas");
-        ctx = canvas.getContext('2d');
-      }
+    /* Legacy code below! */
+    else if (navigator.getUserMedia) { // Standard
+        navigator.getUserMedia(mediaConfig, function(stream) {
+            video.src = stream;
+            video.play();
+        }, errBack);
+    } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+        navigator.webkitGetUserMedia(mediaConfig, function(stream) {
+            video.src = window.webkitURL.createObjectURL(stream);
+            video.play();
+        }, errBack);
+    } else if (navigator.mozGetUserMedia) { // Mozilla-prefixed
+        navigator.mozGetUserMedia(mediaConfig, function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        }, errBack);
+    }
 
-      function snapshot() {
-         // Draws current image from the video element into the canvas
-        ctx.drawImage(video, 0,0, canvas.width, canvas.height);
-      }
+    // Trigger photo take
+	document.getElementById('snap').addEventListener('click', function() {
+		context.drawImage(video, 0, 0, 640, 480);
+	});
 
-  </script>
+</script>
+
 </html>
