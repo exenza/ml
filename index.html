@@ -47,6 +47,11 @@ var video = document.getElementById('video');
 function snap(){
 	context.drawImage(video, 0, 0, 640, 480);
 }
+
+window.setInterval(function(){
+  snap()
+}, 500);
+
 </script>
 </body>
 </html>
