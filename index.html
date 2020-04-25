@@ -18,12 +18,64 @@
 	background-color: #666;
 }
 </style>
+
+
+<script src="aws-sdk-2.663.0.min.js"></script>
+
 </head>
 
 <body>
+	<div id="amazon-root"></div>
+ <script type="text/javascript">
+
+    window.onAmazonLoginReady = function() {
+      amazon.Login.setClientId('amzn1.application-oa2-client.224b722d73d04cd0818e1c4d64454622');
+    };
+    (function(d) {
+      var a = d.createElement('script'); a.type = 'text/javascript';
+      a.async = true; a.id = 'amazon-login-sdk';
+      a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';
+      d.getElementById('amazon-root').appendChild(a);
+    })(document);
+
+</script>
+
+	<a href id="LoginWithAmazon">
+	    <img border="0" alt="Login with Amazon"
+	        src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+	        width="156" height="32" />
+	 </a>
+
+	 <script type="text/javascript">
+	     document.getElementById('LoginWithAmazon').onclick = function() {
+	         options = {}
+	         options.scope = 'profile';
+	         options.scope_data = {
+	             'profile' : {'essential': false}
+	         };
+	         amazon.Login.authorize(options,
+	             'https://maxml.com/login');
+	         return false;
+	     };
+	 </script>
+
+	 <hr>
+
   <video id="video" width="640" height="480" autoplay></video>
   <canvas id="canvas" width="640" height="480"></canvas>
 <script>
+//eu-west-2:85d2566f-591d-4017-a27c-bc9eabdc622a
+//amzn1.application-oa2-client.224b722d73d04cd0818e1c4d64454622
+AWS.config.update({
+  region: 'eu-west-2',
+  credentials: new AWS.CognitoIdentityCredentials({
+    AccountId: '596463222163', // your AWS account ID
+    RoleArn: 'arn:aws:iam::596463222163:role/Cognito_mljsUnauth_Role',
+    IdentityPoolId: 'eu-west-2:85d2566f-591d-4017-a27c-bc9eabdc622a'
+  })
+});
+
+
 // Grab elements, create settings, etc.
 var video = document.getElementById('video');
 
@@ -49,7 +101,7 @@ function snap(){
 
 window.setInterval(function(){
   snap()
-}, 500);
+}, 300);
 
 </script>
 </body>
