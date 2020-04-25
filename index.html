@@ -25,7 +25,7 @@
 </head>
 
 <body>
-	V 1.88
+	V 1.89
 	<div id="amazon-root"></div>
  <script type="text/javascript">
 
@@ -72,12 +72,11 @@ const urlParams = new URLSearchParams(queryString);
 //eu-west-2:85d2566f-591d-4017-a27c-bc9eabdc622a
 //amzn1.application-oa2-client.224b722d73d04cd0818e1c4d64454622
 if(urlParams.get('loggedin')){
-
+console.log("Token:"+urlParams.get('access_token'))
 		AWS.config.credentials = new AWS.WebIdentityCredentials({
 		    RoleArn: 'arn:aws:iam::596463222163:role/mljs',
 		    ProviderId: 'www.amazon.com', // Omit this for Google
 		    WebIdentityToken: urlParams.get('access_token') // Access token from identity provider
-				console.log("Token:"+urlParams.get('access_token'))
 		});
 
 	s3 = new AWS.S3
