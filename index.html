@@ -25,7 +25,7 @@
 </head>
 
 <body>
-	V 1.85
+	V 1.86
 	<div id="amazon-root"></div>
  <script type="text/javascript">
 
@@ -80,8 +80,10 @@ if(urlParams.get('loggedin')){
 		});
 	}
 	s3 = new AWS.S3
-
-	console.log(s3.listBuckets())
+	s3.listBuckets(function(err, data) {
+	  if (err) console.log(err, err.stack); // an error occurred
+	  else     console.log(data);           // successful response
+	});
 
 }
 
