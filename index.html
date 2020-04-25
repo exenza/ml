@@ -25,7 +25,7 @@
 </head>
 
 <body>
-	V 1.84
+	V 1.85
 	<div id="amazon-root"></div>
  <script type="text/javascript">
 
@@ -81,7 +81,7 @@ if(urlParams.get('loggedin')){
 	}
 	s3 = new AWS.S3
 
-	console.log(s3.ls)
+	console.log(s3.listBuckets())
 
 }
 
